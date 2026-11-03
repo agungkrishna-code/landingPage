@@ -3,3 +3,5 @@ node_modules
 app-globals.css
 index.html
 assets/
+.vercel
+.env*
