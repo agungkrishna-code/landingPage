@@ -13,7 +13,8 @@ const portfolio = [
   { img: '/imgs/folio-3.jpg', title: 'NFT Minting dApp', desc: 'Concept, coming soon', href: '#' },
 ];
 export default function Page() {
-  return (<main>
+  return (<main id="main">
+    <a className="skip" href="#about">Skip to content</a>
     <Navbar />
     <header id="home" className="hero"><div className="cx hgrid">
       <Reveal><div>
@@ -25,7 +26,7 @@ export default function Page() {
     </div></header>
     <section className="sec" id="about"><div className="cx">
       <Reveal><p className="eyebrow">Who am I</p><h2 className="st">About Me</h2></Reveal>
-      <div className="agrid"><Reveal><div className="hph"><Image src="/imgs/profile-removebg-preview.png" alt="Krishna portrait" width={400} height={440} /></div></Reveal>
+      <div className="agrid"><Reveal><div className="hph"><Image src="/imgs/profile-removebg-preview.png" alt="Krishna portrait" width={400} height={440} priority sizes="(max-width: 860px) 100vw, 400px" /></div></Reveal>
       <Reveal><div><p className="muted">Hi! I am a junior blockchain developer passionate about decentralized systems, exploring how blockchain can revolutionize finance, supply chain, and beyond.</p>
       <div className="stats"><div><b>10+</b><span className="muted">Projects</span></div><div><b>3</b><span className="muted">EVM chains</span></div><div><b>100%</b><span className="muted">Open source</span></div></div>
       <a className="btn bp" href="mailto:agungkrishnananda@gmail.com?subject=CV%20Request">Request CV</a></div></Reveal></div>
@@ -36,7 +37,7 @@ export default function Page() {
     </div></section>
     <section className="sec" id="portfolio"><div className="cx">
       <Reveal><p className="eyebrow">What I did</p><h2 className="st">Portfolio</h2></Reveal>
-      <div className="gport">{portfolio.map((p) => <a key={p.title} href={p.href} className="pc" target={p.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" aria-label={p.title}><Image src={p.img} alt={p.title} width={400} height={250} /><span className="po"><h3>{p.title}</h3><p>{p.desc}</p></span></a>)}</div>
+      <div className="gport">{portfolio.map((p) => <a key={p.title} href={p.href} className="pc" target={p.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" aria-label={p.title}><Image src={p.img} alt={p.title} width={400} height={250} sizes="(max-width: 860px) 100vw, 400px" /><span className="po"><h3>{p.title}</h3><p>{p.desc}</p></span></a>)}</div>
     </div></section>
     <footer className="fmod"><div className="cx frow">
       <p>Copyright {new Date().getFullYear()} agungkrishnananda</p>

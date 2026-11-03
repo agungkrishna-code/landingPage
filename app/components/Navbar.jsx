@@ -24,12 +24,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
   const toggle = () => { const n = theme === 'light' ? 'dark' : 'light'; setTheme(n); document.documentElement.dataset.theme = n; localStorage.setItem('kr-theme', n); };
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
   return (<>
     <nav className={`gnav${scrolled ? ' scrolled' : ''}`}>
       <div className="cx nin">
         <a className="logo" href="#home">stay<b>foolish</b></a>
         <ul className="nlinks dk">{LINKS.map((l) => <li key={l.href}><a href={l.href} className={active === l.href ? 'on' : ''}>{l.label}</a></li>)}</ul>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div className="nact">
           <button className="tbtn icon" onClick={toggle} aria-label="Toggle theme" title={theme === 'light' ? 'Switch to dark' : 'Switch to light'}>
             {theme === 'light' ? (
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -45,10 +51,10 @@ export default function Navbar() {
               </svg>
             )}
           </button>
-          <button className="tbtn drawer" onClick={() => setOpen(!open)} aria-label="Menu">Menu</button>
+          <button className="tbtn drawer" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} aria-controls="mnav">Menu</button>
         </div>
       </div>
     </nav>
-    {open && <div className="dpanel">{LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>)}</div>}
+    {open && (<><button className="dbackdrop" onClick={() => setOpen(false)} aria-label="Close menu" tabIndex={-1} /><div className="dpanel" id="mnav" role="dialog" aria-label="Menu">{LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>)}</div></>)}
   </>);
 }
