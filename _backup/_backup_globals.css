@@ -1,0 +1,38 @@
+@import url('./legacy-style.css');
+
+html { scroll-behavior: smooth; }
+
+/* Fix: navbar contrast on scroll */
+.custom-navbar {
+  background: transparent;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.custom-navbar.affix {
+  background: rgba(255, 255, 255, 0.95) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+.custom-navbar.affix .logo,
+.custom-navbar.affix .nav .item .link {
+  color: #212529 !important;
+  text-shadow: none !important;
+}
+.custom-navbar.affix .hamburger-inner,
+.custom-navbar.affix .hamburger-inner::before,
+.custom-navbar.affix .hamburger-inner::after {
+  background: #212529 !important;
+}
+/* Mobile dropdown: solid background so text never clashes */
+@media (max-width: 767.98px) {
+  .custom-navbar .nav {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  .custom-navbar .nav .item .link {
+    color: #212529 !important;
+  }
+}
+

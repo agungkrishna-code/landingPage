@@ -1,0 +1,2 @@
+:root{ --bg:#f7f7fb; --ink:#14121f; --muted:#5f5b72; --brand1:#695aa6; --brand2:#3ec1d3; --accent:#ff6d02; --card:#fff; --line:rgba(20,18,31,.09); --nav-h:68px; --radius:18px; --shadow:0 20px 50px -20px rgba(30,20,80,.35); --nav-bg:rgba(255,255,255,.82); --nav-shadow:rgba(0,0,0,.25); }
+[data-theme='dark']{ --bg:#0d0c14; --ink:#f2f0ff; --muted:#a9a4c4; --card:#171527; --line:rgba(255,255,255,.1); --nav-bg:rgba(23,21,39,.82); --nav-shadow:rgba(0,0,0,.6); }

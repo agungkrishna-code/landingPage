@@ -1,0 +1,5 @@
+node_modules
+.next
+app-globals.css
+index.html
+assets/
