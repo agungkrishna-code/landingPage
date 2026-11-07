@@ -9,8 +9,8 @@ const services = [
 ];
 const portfolio = [
   { img: '/imgs/shitcoin.jpeg', title: 'Shitcoin Documentary', desc: 'Research and open-source docs', href: 'https://github.com/agungkrishna-code/shitcoin_source_documentary' },
-  { img: '/imgs/folio-2.jpg', title: 'DeFi Dashboard', desc: 'Concept, coming soon', href: '#' },
-  { img: '/imgs/folio-3.jpg', title: 'NFT Minting dApp', desc: 'Concept, coming soon', href: '#' },
+  { img: '/imgs/folio-2.jpg', title: 'DeFi Dashboard', desc: 'Concept, coming soon', href: '' },
+  { img: '/imgs/folio-3.jpg', title: 'NFT Minting dApp', desc: 'Concept, coming soon', href: '' },
 ];
 export default function Page() {
   return (<main id="main">
@@ -37,7 +37,9 @@ export default function Page() {
     </div></section>
     <section className="sec" id="portfolio"><div className="cx">
       <Reveal><p className="eyebrow">What I did</p><h2 className="st">Portfolio</h2></Reveal>
-      <div className="gport">{portfolio.map((p) => <a key={p.title} href={p.href} className="pc" target={p.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" aria-label={p.title}><Image src={p.img} alt={p.title} width={400} height={250} sizes="(max-width: 860px) 100vw, 400px" /><span className="po"><h3>{p.title}</h3><p>{p.desc}</p></span></a>)}</div>
+      <div className="gport">{portfolio.map((p) => p.href
+        ? <a key={p.title} href={p.href} className="pc" target="_blank" rel="noreferrer" aria-label={p.title}><Image src={p.img} alt={p.title} width={400} height={250} sizes="(max-width: 860px) 100vw, 400px" /><span className="po"><h3>{p.title}</h3><p>{p.desc}</p></span></a>
+        : <div key={p.title} className="pc" aria-disabled="true"><Image src={p.img} alt={p.title} width={400} height={250} sizes="(max-width: 860px) 100vw, 400px" /><span className="po"><h3>{p.title}</h3><p>{p.desc}</p></span></div>)}</div>
     </div></section>
     <footer className="fmod"><div className="cx frow">
       <p>Copyright {new Date().getFullYear()} agungkrishnananda</p>

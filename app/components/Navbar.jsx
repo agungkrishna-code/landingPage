@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 const LINKS = [
   { href: '#home', label: 'Home' },
   { href: '#about', label: 'About' },
@@ -26,10 +26,13 @@ export default function Navbar() {
   const toggle = () => { const n = theme === 'light' ? 'dark' : 'light'; setTheme(n); document.documentElement.dataset.theme = n; localStorage.setItem('kr-theme', n); };
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); menuBtn.current?.focus(); } };
     window.addEventListener('keydown', onKey);
+    panelRef.current?.focus();
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
+  const panelRef = useRef(null);
+  const menuBtn = useRef(null);
   return (<>
     <nav className={`gnav${scrolled ? ' scrolled' : ''}`}>
       <div className="cx nin">
@@ -51,10 +54,10 @@ export default function Navbar() {
               </svg>
             )}
           </button>
-          <button className="tbtn drawer" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} aria-controls="mnav">Menu</button>
+          <button ref={menuBtn} className="tbtn drawer" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} aria-controls="mnav">Menu</button>
         </div>
       </div>
     </nav>
-    {open && (<><button className="dbackdrop" onClick={() => setOpen(false)} aria-label="Close menu" tabIndex={-1} /><div className="dpanel" id="mnav" role="dialog" aria-label="Menu">{LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>)}</div></>)}
+    {open && (<><button className="dbackdrop" onClick={() => setOpen(false)} aria-label="Close menu" tabIndex={-1} /><div className="dpanel" id="mnav" role="dialog" aria-modal="true" aria-label="Menu" ref={panelRef} tabIndex={-1}>{LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>)}</div></>)}
   </>);
 }
