@@ -1,4 +1,4 @@
-// app/robots.js — allow full crawling
+// app/robots.js: allow full crawling
 export default function robots() {
   return {
     rules: [{ userAgent: '*', allow: '/' }],

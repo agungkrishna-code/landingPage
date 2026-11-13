@@ -1,63 +1,301 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 const LINKS = [
-  { href: '#home', label: 'Home' },
   { href: '#about', label: 'About' },
-  { href: '#service', label: 'Services' },
-  { href: '#portfolio', label: 'Portfolio' },
+  { href: '#services', label: 'Services' },
+  { href: '#work', label: 'Work' },
+  { href: '#contact', label: 'Contact' },
 ];
+
+const MOBILE_BREAKPOINT = '(min-width: 861px)';
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('#home');
-  const [theme, setTheme] = useState('light');
-  useEffect(() => {
-    const t = localStorage.getItem('kr-theme') || 'light';
-    setTheme(t); document.documentElement.dataset.theme = t;
-    const onScroll = () => {
-      setScrolled(window.scrollY > 24);
-      let cur = '#home';
-      LINKS.forEach((l) => { const el = document.querySelector(l.href); if (el && el.getBoundingClientRect().top < 200) cur = l.href; });
-      setActive(cur);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+  const menuButtonRef = useRef(null);
+  const panelRef = useRef(null);
+
+  const closeMenu = useCallback((returnFocus = true) => {
+    setOpen(false);
+    if (returnFocus) {
+      window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+    }
   }, []);
-  const toggle = () => { const n = theme === 'light' ? 'dark' : 'light'; setTheme(n); document.documentElement.dataset.theme = n; localStorage.setItem('kr-theme', n); };
+
+  useEffect(() => {
+    const update = () => {
+      setScrolled(window.scrollY > 12);
+
+      let current = '#home';
+      for (const link of LINKS) {
+        const section = document.querySelector(link.href);
+        if (section && section.getBoundingClientRect().top <= 160) {
+          current = link.href;
+        }
+      }
+      setActive(current);
+    };
+
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        update();
+        frame = 0;
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_BREAKPOINT);
+    const onChange = (event) => {
+      if (event.matches) setOpen(false);
+    };
+    media.addEventListener('change', onChange);
+    return () => media.removeEventListener('change', onChange);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); menuBtn.current?.focus(); } };
-    window.addEventListener('keydown', onKey);
-    panelRef.current?.focus();
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
-  const panelRef = useRef(null);
-  const menuBtn = useRef(null);
-  return (<>
-    <nav className={`gnav${scrolled ? ' scrolled' : ''}`}>
-      <div className="cx nin">
-        <a className="logo" href="#home">stay<b>foolish</b></a>
-        <ul className="nlinks dk">{LINKS.map((l) => <li key={l.href}><a href={l.href} className={active === l.href ? 'on' : ''}>{l.label}</a></li>)}</ul>
-        <div className="nact">
-          <button className="tbtn icon" onClick={toggle} aria-label="Toggle theme" title={theme === 'light' ? 'Switch to dark' : 'Switch to light'}>
-            {theme === 'light' ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="4" />
-                <line x1="12" y1="2" x2="12" y2="5" /><line x1="12" y1="19" x2="12" y2="22" />
-                <line x1="2" y1="12" x2="5" y2="12" /><line x1="19" y1="12" x2="22" y2="12" />
-                <line x1="4.93" y1="4.93" x2="7.05" y2="7.05" /><line x1="16.95" y1="16.95" x2="19.07" y2="19.07" />
-                <line x1="4.93" y1="19.07" x2="7.05" y2="16.95" /><line x1="16.95" y1="7.05" x2="19.07" y2="4.93" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const panel = panelRef.current;
+    const getFocusable = () =>
+      panel
+        ? Array.from(
+            panel.querySelectorAll('a[href], button:not([disabled])')
+          )
+        : [];
+
+    panel?.querySelector('.menu-close')?.focus();
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeMenu();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const items = getFocusable();
+      if (items.length === 0) return;
+
+      const first = items[0];
+      const last = items[items.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, closeMenu]);
+
+  const toggleTheme = () => {
+    const current =
+      document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.setAttribute('content', next === 'dark' ? '#0d1210' : '#f4f0e6');
+    });
+    try {
+      localStorage.setItem('kr-theme', next);
+    } catch {
+      // The theme still applies for this visit when storage is unavailable.
+    }
+  };
+
+  return (
+    <>
+      <header className={`nav${scrolled ? ' is-scrolled' : ''}`}>
+        <div className="wrap nav-inner">
+          <a className="brand" href="#home" aria-label="stayfoolish, back to top">
+            stayfoolish<span aria-hidden="true">.</span>
+          </a>
+
+          <nav aria-label="Primary">
+            <ul className="nav-links">
+              {LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className={active === link.href ? 'is-active' : ''}
+                    aria-current={active === link.href ? 'location' : undefined}
+                    onClick={() => setActive(link.href)}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="nav-actions">
+            <button
+              type="button"
+              className="icon-btn theme-btn"
+              onClick={toggleTheme}
+              aria-label="Toggle color theme"
+              title="Toggle color theme"
+            >
+              <svg
+                className="ico-moon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
-            )}
-          </button>
-          <button ref={menuBtn} className="tbtn drawer" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} aria-controls="mnav">Menu</button>
+              <svg
+                className="ico-sun"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+            </button>
+
+            <a className="btn btn-primary btn-sm nav-cta" href="#contact" onClick={() => setActive('#contact')}>
+              Start a project
+            </a>
+
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="menu-toggle"
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+            >
+              <span className="menu-toggle-label">Menu</span>
+              <span className="menu-icon" aria-hidden="true">
+                <span />
+                <span />
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
-    {open && (<><button className="dbackdrop" onClick={() => setOpen(false)} aria-label="Close menu" tabIndex={-1} /><div className="dpanel" id="mnav" role="dialog" aria-modal="true" aria-label="Menu" ref={panelRef} tabIndex={-1}>{LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>)}</div></>)}
-  </>);
+      </header>
+
+      {open && (
+        <div
+          className="menu-panel"
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="menu-title"
+          ref={panelRef}
+        >
+          <div className="menu-head">
+            <a
+              className="brand"
+              href="#home"
+              onClick={() => {
+                setActive('#home');
+                closeMenu();
+              }}
+            >
+              stayfoolish<span aria-hidden="true">.</span>
+            </a>
+            <button
+              type="button"
+              className="menu-close"
+              onClick={() => closeMenu()}
+              aria-label="Close menu"
+            >
+              <span>Close</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+
+          <p className="mono menu-title" id="menu-title">
+            Index
+          </p>
+
+          <nav aria-label="Mobile">
+            <ul className="menu-list">
+              {LINKS.map((link, index) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={() => {
+                      setActive(link.href);
+                      closeMenu();
+                    }}
+                  >
+                    <span className="menu-index">0{index + 1}</span>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="menu-foot">
+            <a
+              className="btn btn-primary"
+              href="#contact"
+              onClick={() => {
+                setActive('#contact');
+                closeMenu();
+              }}
+            >
+              Start a project
+            </a>
+            <a className="menu-email" href="mailto:agungkrishnananda@gmail.com">
+              agungkrishnananda@gmail.com
+            </a>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
