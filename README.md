@@ -36,6 +36,7 @@ app/
 ├── robots.js
 └── sitemap.js
 public/imgs/            # portrait, project image, legacy icons
+public/krishna-cv.pdf   # downloadable CV, linked from About
 ```
 
 ## Scripts
@@ -64,8 +65,11 @@ npm start        # serve the production build
 
 ## Content to verify before publishing
 
-- The hero figures (10+ projects, 3 EVM chains, 100% open source) are carried over
-  from the previous version of the site. Confirm they are accurate.
+- The hero stat row (10+ projects, 3 EVM chains, 100% open source) was removed
+  because the figures could not be confirmed. Do not reintroduce them without
+  verified counts.
+- `public/krishna-cv.pdf` is the downloadable CV linked from About. Replace the
+  file in place when the CV is updated; keep the filename stable.
 - `mailto:` addresses and social profile URLs are the ones supplied by the owner.
 - Concept studies have no public demo and are not linked as if they did.
 

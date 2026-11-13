@@ -727,34 +727,6 @@ textarea {
   margin-top: 30px;
 }
 
-.hero-facts {
-  display: flex;
-  gap: clamp(24px, 4vw, 52px);
-  margin-top: 40px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-}
-
-.hero-facts > div {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 2px;
-}
-
-.fact-num {
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: 1.7rem;
-  line-height: 1;
-}
-
-.fact-label {
-  color: var(--muted);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .portrait-frame {
   position: relative;
 }
@@ -1683,11 +1655,6 @@ textarea {
     align-items: stretch;
   }
 
-  .hero-facts {
-    justify-content: space-between;
-    gap: 14px;
-  }
-
   .portrait-badge {
     width: calc(100% - 26px);
     justify-content: center;
@@ -1768,14 +1735,6 @@ textarea {
 
   .contact-email {
     font-size: 1.02rem;
-  }
-
-  .hero-facts {
-    gap: 10px;
-  }
-
-  .fact-num {
-    font-size: 1.5rem;
   }
 }
 

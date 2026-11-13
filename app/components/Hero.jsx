@@ -34,21 +34,6 @@ export default function Hero() {
               Email Krishna
             </a>
           </div>
-
-          <dl className="hero-facts" aria-label="Quick facts">
-            <div>
-              <dt className="fact-label">Projects</dt>
-              <dd className="fact-num">10+</dd>
-            </div>
-            <div>
-              <dt className="fact-label">EVM chains</dt>
-              <dd className="fact-num">3</dd>
-            </div>
-            <div>
-              <dt className="fact-label">Open source</dt>
-              <dd className="fact-num">100%</dd>
-            </div>
-          </dl>
         </div>
 
         <div className="hero-visual">

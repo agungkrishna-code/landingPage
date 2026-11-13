@@ -82,9 +82,11 @@ export default function About() {
           <div className="about-actions">
             <a
               className="btn btn-ghost"
-              href="mailto:agungkrishnananda@gmail.com?subject=CV%20request"
+              href="/krishna-cv.pdf"
+              download="Krishna-CV-2026.pdf"
             >
-              Request my CV
+              Download CV
+              <span className="sr-only"> (PDF)</span>
             </a>
             <a
               className="text-link"
