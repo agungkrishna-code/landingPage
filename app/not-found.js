@@ -9,12 +9,12 @@ export default function NotFound() {
     <main className="status-page" id="main" tabIndex={-1}>
       <div className="status-card">
         <Link className="status-brand" href="/">
-          stayfoolish<span aria-hidden="true">.</span>
+          Krishna
         </Link>
-        <p className="mono status-code">Error 404</p>
+        <p className="status-kicker">Error 404</p>
         <h1>This block is empty.</h1>
-        <p>
-          The page you were looking for does not exist, or it moved somewhere else.
+        <p lang="id">
+          Halaman yang kamu cari tidak ada, atau sudah pindah.
         </p>
         <div className="status-actions">
           <Link className="btn btn-primary" href="/">

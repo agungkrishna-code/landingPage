@@ -7,12 +7,12 @@ export default function Error({ reset }) {
     <main className="status-page" id="main" tabIndex={-1}>
       <div className="status-card">
         <Link className="status-brand" href="/">
-          stayfoolish<span aria-hidden="true">.</span>
+          Krishna
         </Link>
-        <p className="mono status-code">Unexpected error</p>
+        <p className="status-kicker">Unexpected error</p>
         <h1>Something broke.</h1>
-        <p>
-          The page could not finish loading. Try again, or go back to the homepage.
+        <p lang="id">
+          Halaman tidak selesai dimuat. Coba lagi, atau kembali ke halaman utama.
         </p>
         <div className="status-actions">
           <button className="btn btn-primary" type="button" onClick={reset}>

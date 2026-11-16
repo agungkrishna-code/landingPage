@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Stamp from './Stamp';
 
 function DefiConcept() {
   return (
@@ -26,13 +27,22 @@ function DefiConcept() {
         <path d="M250 218v-58" strokeDasharray="2 4" />
         <path d="M428 130v-46" strokeDasharray="2 4" />
       </g>
-      <g fill="var(--copper)">
-        <rect x="230" y="145" width="112" height="42" rx="1" fill="var(--surface)" stroke="var(--line)" />
+      <g className="concept-annotation" fill="var(--copper)">
+        <rect
+          x="230"
+          y="145"
+          width="112"
+          height="42"
+          rx="1"
+          fill="var(--surface)"
+          stroke="var(--line)"
+        />
         <text
           x="242"
           y="163"
           fill="var(--muted)"
-          fontFamily="var(--font-mono)"
+          fontFamily="var(--font-sans)"
+          fontWeight="500"
           fontSize="10"
           letterSpacing=".8"
         >
@@ -42,14 +52,21 @@ function DefiConcept() {
           x="242"
           y="178"
           fill="var(--ink)"
-          fontFamily="var(--font-mono)"
+          fontFamily="var(--font-sans)"
+          fontWeight="500"
           fontSize="11"
           letterSpacing=".6"
         >
           POOL A
         </text>
       </g>
-      <g fill="var(--muted)" fontFamily="var(--font-mono)" fontSize="10" letterSpacing="1.2">
+      <g
+        fill="var(--muted)"
+        fontFamily="var(--font-sans)"
+        fontWeight="500"
+        fontSize="10"
+        letterSpacing="1.2"
+      >
         <text x="70" y="330">LIQUIDITY</text>
         <text x="516" y="330">PRICE</text>
       </g>
@@ -118,7 +135,13 @@ function NftConcept() {
         stroke="var(--line-strong)"
         strokeWidth="1"
       />
-      <g fill="var(--muted)" fontFamily="var(--font-mono)" fontSize="10" letterSpacing="1.2">
+      <g
+        fill="var(--muted)"
+        fontFamily="var(--font-sans)"
+        fontWeight="500"
+        fontSize="10"
+        letterSpacing="1.2"
+      >
         <text x="66" y="330">TOKEN GRID</text>
         <text x="520" y="330">MINT</text>
       </g>
@@ -130,20 +153,14 @@ export default function Work() {
   return (
     <section className="section work" id="work">
       <div className="wrap">
-        <div className="section-head">
+        <div className="section-head section-head-split">
           <div>
-            <p className="eyebrow">
-              <span>04</span> Selected work
-            </p>
-            <h2 className="section-title">
-              Work, and the ideas
-              <br />
-              <em>around it.</em>
-            </h2>
+            <p className="section-label">Work</p>
+            <h2 className="section-title">Work, and the ideas around it.</h2>
           </div>
-          <p className="section-intro">
-            One public project, two concepts in progress. Nothing here pretends to
-            be more finished than it is.
+          <p className="section-intro" lang="id">
+            Satu proyek publik. Dua studi konsep. Setiap label jujur soal
+            statusnya.
           </p>
         </div>
 
@@ -157,24 +174,24 @@ export default function Work() {
             <div className="coin">
               <Image
                 src="/imgs/shitcoin.jpeg"
-                alt="Shitcoin token coin artwork"
+                alt="Coin artwork for the Shitcoin Documentary project"
                 width={400}
                 height={400}
-                sizes="(max-width: 860px) 52vw, 274px"
+                sizes="(max-width: 640px) 78vw, (max-width: 860px) 46vw, 280px"
               />
             </div>
           </div>
           <div className="feature-body">
-            <p className="mono project-meta">Featured project / Open source</p>
+            <Stamp tone="pine">Public project</Stamp>
             <h3>Shitcoin Documentary</h3>
-            <p>
-              Research and open-source documentation that traces a meme token from
-              launch to aftermath. Contracts, sources, and notes are public.
+            <p lang="id">
+              Riset dan dokumentasi open source yang melacak sebuah meme token
+              dari launch sampai dampaknya. Repo publiknya bisa dibaca langsung.
             </p>
             <ul className="tags" aria-label="Project topics">
               <li>Research</li>
               <li>Documentation</li>
-              <li>Blockchain</li>
+              <li>Open source</li>
             </ul>
             <span className="feature-cta">
               Read the repository
@@ -196,9 +213,24 @@ export default function Work() {
           </div>
         </a>
 
+        <p className="work-note" lang="id">
+          Repo publik dan build log ada di{' '}
+          <a
+            className="text-link"
+            href="https://github.com/agungkrishna-code"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+            <span aria-hidden="true">&#8599;</span>
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          .
+        </p>
+
         <div className="concept-head">
-          <h3 className="mono">Concept studies</h3>
-          <p>Personal explorations, not shipped products.</p>
+          <p className="concept-label">Concept studies</p>
+          <p lang="id">Sengaja belum di-ship.</p>
         </div>
 
         <div className="concept-grid">
@@ -207,11 +239,11 @@ export default function Work() {
               <DefiConcept />
             </div>
             <div className="concept-body">
-              <p className="mono">Concept / DeFi</p>
+              <Stamp tone="copper">Concept</Stamp>
               <h3>DeFi Dashboard</h3>
-              <p>
-                A reading layer for liquidity positions and pool activity. Still a
-                concept, with no public demo yet.
+              <p lang="id">
+                Tampilan untuk membaca posisi likuiditas dan aktivitas pool.
+                Masih konsep, belum ada demo publik.
               </p>
             </div>
           </article>
@@ -221,29 +253,15 @@ export default function Work() {
               <NftConcept />
             </div>
             <div className="concept-body">
-              <p className="mono">Concept / NFT</p>
+              <Stamp tone="copper">Concept</Stamp>
               <h3>NFT Minting dApp</h3>
-              <p>
-                A small minting flow built around clear steps and readable wallet
-                states. Also still in the sketch stage.
+              <p lang="id">
+                Alur minting yang ringkas, langkahnya jelas, dan wallet
+                state-nya mudah dibaca. Masih di tahap sketsa.
               </p>
             </div>
           </article>
         </div>
-
-        <p className="work-note">
-          The build log lives on GitHub.{' '}
-          <a
-            className="text-link"
-            href="https://github.com/agungkrishna-code"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Follow along
-            <span aria-hidden="true">&#8599;</span>
-            <span className="sr-only"> (opens in a new tab)</span>
-          </a>
-        </p>
       </div>
     </section>
   );

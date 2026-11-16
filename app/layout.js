@@ -1,9 +1,9 @@
-import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Serif } from 'next/font/google';
+import { IBM_Plex_Sans, Newsreader } from 'next/font/google';
 import './globals.css';
 
-const serif = Instrument_Serif({
+const serif = Newsreader({
   subsets: ['latin'],
-  weight: '400',
+  weight: ['400', '500'],
   style: ['normal', 'italic'],
   variable: '--font-serif',
   display: 'swap',
@@ -16,13 +16,6 @@ const sans = IBM_Plex_Sans({
   display: 'swap',
 });
 
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
-  display: 'swap',
-});
-
 const siteUrl = 'https://agungkrishnananda.vercel.app';
 const description =
   'Portfolio of Krishna, a junior web and blockchain developer building Next.js interfaces and Solidity contracts for on-chain products.';
@@ -30,7 +23,7 @@ const description =
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Krishna | Web & Blockchain Developer',
+    default: 'Krishna | Junior Web & Blockchain Developer',
     template: '%s | Krishna',
   },
   description,
@@ -63,12 +56,12 @@ export const metadata = {
     locale: 'en_US',
     url: '/',
     siteName: 'Krishna Portfolio',
-    title: 'Krishna | Web & Blockchain Developer',
+    title: 'Krishna | Junior Web & Blockchain Developer',
     description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Krishna | Web & Blockchain Developer',
+    title: 'Krishna | Junior Web & Blockchain Developer',
     description,
   },
 };
@@ -78,8 +71,8 @@ export const viewport = {
   initialScale: 1,
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f4f0e6' },
-    { media: '(prefers-color-scheme: dark)', color: '#0d1210' },
+    { media: '(prefers-color-scheme: light)', color: '#f3eddf' },
+    { media: '(prefers-color-scheme: dark)', color: '#0e1411' },
   ],
 };
 
@@ -89,7 +82,7 @@ const personSchema = {
   name: 'Krishna',
   alternateName: 'agungkrishnananda',
   url: siteUrl,
-  jobTitle: 'Web and Blockchain Developer',
+  jobTitle: 'Junior Web and Blockchain Developer',
   description,
   sameAs: [
     'https://github.com/agungkrishna-code',
@@ -119,7 +112,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+      <body className={`${serif.variable} ${sans.variable}`}>
         <a className="skip-link" href="#main">
           Skip to content
         </a>

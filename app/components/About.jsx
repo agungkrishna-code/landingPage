@@ -1,18 +1,18 @@
 const principles = [
   {
-    number: '01',
-    title: 'Understand the flow first.',
-    text: 'Read the product, the user path, and the chain interactions before writing a line of UI.',
+    key: 'Flow',
+    title: 'Read the flow first.',
+    text: 'Baca produk, user path, dan interaksi on-chain sebelum menulis satu baris UI.',
   },
   {
-    number: '02',
-    title: 'Keep the contract small and tested.',
-    text: 'Smaller Solidity surfaces are easier to review, cheaper to deploy, and safer to live with.',
+    key: 'Contract',
+    title: 'Keep the contract small.',
+    text: 'Contract Solidity yang kecil lebih mudah di-review, biaya deploy-nya lebih murah, dan lebih aman dipakai.',
   },
   {
-    number: '03',
-    title: 'Ship an interface people can finish.',
-    text: 'Clear labels, useful error states, and a layout that behaves at 390px as well as 1440px.',
+    key: 'Ship',
+    title: 'Finish the interface.',
+    text: 'Label jelas, error yang berguna, dan layout yang tetap waras di 390px maupun 1440px.',
   },
 ];
 
@@ -22,57 +22,38 @@ export default function About() {
   return (
     <section className="section about" id="about">
       <div className="wrap about-grid">
-        <div className="about-head">
-          <p className="eyebrow">
-            <span>02</span> About
-          </p>
-          <h2 className="section-title">
-            Junior by title.
-            <br />
-            <em>Careful</em> by habit.
-          </h2>
-          <p className="about-note mono">Krishna / Web + Chain</p>
-
-          <div className="about-facts">
-            <div>
-              <p className="mono">Open to</p>
-              <p>Freelance, junior roles, and collaborations.</p>
-            </div>
-            <div>
-              <p className="mono">Focus</p>
-              <p>Next.js interfaces, Solidity contracts, and on-chain UX.</p>
-            </div>
-          </div>
-        </div>
-
         <div className="about-body">
-          <p className="lead">
-            I am a junior blockchain developer exploring how decentralized systems
-            can change finance, supply chains, and the everyday web.
+          <p className="section-label about-label">About</p>
+
+          <h2 className="section-title">
+            Junior, and <em>careful</em> by habit.
+          </h2>
+
+          <p className="lead" lang="id">
+            Saya developer junior yang bekerja di antara dua hal: interface
+            Next.js dan contract Solidity yang harus bisa diprediksi.
           </p>
-          <p>
-            My work sits between two worlds: clean Next.js frontends and Solidity
-            contracts that need to be predictable. I like the unglamorous parts,
-            from writing tests to tightening the copy on a wallet flow. I am looking
-            for freelance work, a junior role, or a collaboration where I can learn
-            from people who ship.
+          <p lang="id">
+            Sebagian besar kerja saya justru bagian yang tidak glamor: membaca
+            alur, mengecilkan contract, menulis test, merapikan pesan error di
+            wallet. Saya ingin belajar dari orang yang benar-benar ship.
           </p>
 
-          <ol className="principles">
+          <ul className="rules">
             {principles.map((item) => (
-              <li key={item.number}>
-                <span className="mono principle-num">{item.number}</span>
+              <li key={item.key}>
+                <span className="rule-key">{item.key}</span>
                 <div>
                   <h3>{item.title}</h3>
-                  <p>{item.text}</p>
+                  <p lang="id">{item.text}</p>
                 </div>
               </li>
             ))}
-          </ol>
+          </ul>
 
           <div className="toolkit">
-            <p className="mono toolkit-label">Working with</p>
-            <ul>
+            <p className="small-label">Working with</p>
+            <ul className="tags">
               {toolkit.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -81,7 +62,7 @@ export default function About() {
 
           <div className="about-actions">
             <a
-              className="btn btn-ghost"
+              className="btn btn-ghost btn-sm"
               href="/krishna-cv.pdf"
               download="Krishna-CV-2026.pdf"
             >
@@ -99,6 +80,19 @@ export default function About() {
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </div>
+        </div>
+
+        <div className="about-rail">
+          <dl className="fact-list">
+            <div>
+              <dt>Open to</dt>
+              <dd lang="id">Freelance, posisi junior, kolaborasi.</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd lang="id">Next.js, Solidity, on-chain UX.</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>

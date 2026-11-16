@@ -20,39 +20,33 @@ const socials = [
 
 export default function Contact() {
   return (
-    <section className="contact" id="contact">
+    <section className="contact on-dark" id="contact">
       <div className="wrap contact-grid">
         <div className="contact-main">
-          <p className="eyebrow contact-eyebrow">
-            <span>05</span> Contact
-          </p>
+          <p className="section-label contact-label">Contact</p>
           <h2 className="section-title contact-title">
-            Tell me what you are
-            <br />
-            <em>building.</em>
+            Tell me what you are building.
           </h2>
-          <p className="contact-lead">
-            I am open to freelance projects, junior roles, and collaborations around
-            web and on-chain products. Email is the fastest way to reach me.
+          <p className="contact-lead" lang="id">
+            Saya terbuka untuk proyek freelance, posisi junior, dan kolaborasi
+            di bidang web dan produk on-chain. Email adalah cara tercepat untuk
+            menghubungi saya.
           </p>
 
-          <a className="contact-email" href="mailto:agungkrishnananda@gmail.com">
+          <a
+            className="contact-email"
+            href="mailto:agungkrishnananda@gmail.com?subject=Hello%20Krishna"
+          >
             agungkrishnananda@gmail.com
           </a>
 
           <div className="contact-actions">
             <CopyEmail />
-            <a
-              className="btn btn-outline-light"
-              href="mailto:agungkrishnananda@gmail.com?subject=Project%20inquiry"
-            >
-              Open email app
-            </a>
           </div>
         </div>
 
         <div className="contact-side">
-          <p className="mono contact-side-label">Elsewhere</p>
+          <p className="section-label contact-side-label">Elsewhere</p>
           <ul className="contact-links">
             {socials.map((social) => (
               <li key={social.label}>
@@ -82,11 +76,6 @@ export default function Contact() {
               </li>
             ))}
           </ul>
-
-          <p className="contact-status">
-            <span className="status-dot status-dot-light" aria-hidden="true" />
-            Available for freelance and collaboration
-          </p>
         </div>
       </div>
     </section>

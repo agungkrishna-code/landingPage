@@ -45,22 +45,15 @@ export default function CopyEmail() {
     }
   };
 
-  const label =
-    status === 'copying' ? 'Copying...' : status === 'copied' ? 'Copied' : 'Copy address';
-
   return (
     <div className="copy-email">
-      <button
-        type="button"
-        className="btn btn-cream"
-        onClick={copy}
-        disabled={status === 'copying'}
-      >
-        {label}
+      <button type="button" className="btn btn-outline-light" onClick={copy}>
+        Copy email
       </button>
-      <span className="copy-status" role="status" aria-live="polite">
-        {status === 'copied' && `${EMAIL} copied to the clipboard`}
-        {status === 'error' && 'Copy failed. Use the email link.'}
+      <span className="copy-status" role="status" aria-live="polite" lang="id">
+        {status === 'copying' && 'Menyalin...'}
+        {status === 'copied' && 'Email disalin.'}
+        {status === 'error' && 'Gagal menyalin. Pakai alamat email di atas.'}
       </span>
     </div>
   );

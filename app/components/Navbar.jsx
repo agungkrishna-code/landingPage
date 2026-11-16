@@ -9,12 +9,17 @@ const LINKS = [
   { href: '#contact', label: 'Contact' },
 ];
 
+const EMAIL = 'agungkrishnananda@gmail.com';
 const MOBILE_BREAKPOINT = '(min-width: 861px)';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('#home');
+  const [theme, setTheme] = useState(() => {
+    if (typeof document === 'undefined') return 'light';
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  });
   const menuButtonRef = useRef(null);
   const panelRef = useRef(null);
 
@@ -23,6 +28,26 @@ export default function Navbar() {
     if (returnFocus) {
       window.requestAnimationFrame(() => menuButtonRef.current?.focus());
     }
+  }, []);
+
+  const focusTarget = useCallback((href) => {
+    window.requestAnimationFrame(() => {
+      const section = document.querySelector(href);
+      const heading = section?.querySelector('h1, h2');
+      const target = heading || section;
+      if (target instanceof HTMLElement) {
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const current =
+      document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.setAttribute('content', current === 'dark' ? '#0e1411' : '#f3eddf');
+    });
   }, []);
 
   useEffect(() => {
@@ -59,24 +84,29 @@ export default function Navbar() {
   useEffect(() => {
     const media = window.matchMedia(MOBILE_BREAKPOINT);
     const onChange = (event) => {
-      if (event.matches) setOpen(false);
+      if (event.matches && open) {
+        setOpen(false);
+        window.requestAnimationFrame(() => {
+          document.querySelector('.nav .brand')?.focus();
+        });
+      }
     };
     media.addEventListener('change', onChange);
     return () => media.removeEventListener('change', onChange);
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
 
-    const previousOverflow = document.body.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     const panel = panelRef.current;
     const getFocusable = () =>
       panel
-        ? Array.from(
-            panel.querySelectorAll('a[href], button:not([disabled])')
-          )
+        ? Array.from(panel.querySelectorAll('a[href], button:not([disabled])'))
         : [];
 
     panel?.querySelector('.menu-close')?.focus();
@@ -108,7 +138,8 @@ export default function Navbar() {
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
     };
   }, [open, closeMenu]);
 
@@ -118,8 +149,9 @@ export default function Navbar() {
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     document.documentElement.style.colorScheme = next;
+    setTheme(next);
     document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
-      meta.setAttribute('content', next === 'dark' ? '#0d1210' : '#f4f0e6');
+      meta.setAttribute('content', next === 'dark' ? '#0e1411' : '#f3eddf');
     });
     try {
       localStorage.setItem('kr-theme', next);
@@ -132,8 +164,8 @@ export default function Navbar() {
     <>
       <header className={`nav${scrolled ? ' is-scrolled' : ''}`}>
         <div className="wrap nav-inner">
-          <a className="brand" href="#home" aria-label="stayfoolish, back to top">
-            stayfoolish<span aria-hidden="true">.</span>
+          <a className="brand" href="#home" aria-label="Krishna, back to top">
+            Krishna
           </a>
 
           <nav aria-label="Primary">
@@ -156,10 +188,19 @@ export default function Navbar() {
           <div className="nav-actions">
             <button
               type="button"
-              className="icon-btn theme-btn"
+              className="theme-btn"
               onClick={toggleTheme}
-              aria-label="Toggle color theme"
-              title="Toggle color theme"
+              suppressHydrationWarning
+              aria-label={
+                theme === 'dark'
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+              }
+              title={
+                theme === 'dark'
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+              }
             >
               <svg
                 className="ico-moon"
@@ -191,8 +232,11 @@ export default function Navbar() {
               </svg>
             </button>
 
-            <a className="btn btn-primary btn-sm nav-cta" href="#contact" onClick={() => setActive('#contact')}>
-              Start a project
+            <a
+              className="btn btn-primary btn-sm nav-cta"
+              href={`mailto:${EMAIL}?subject=Hello%20Krishna`}
+            >
+              Email Krishna
             </a>
 
             <button
@@ -202,7 +246,7 @@ export default function Navbar() {
               onClick={() => setOpen(true)}
               aria-label="Open menu"
               aria-expanded={open}
-              aria-controls="mobile-menu"
+              aria-controls={open ? 'mobile-menu' : undefined}
             >
               <span className="menu-toggle-label">Menu</span>
               <span className="menu-icon" aria-hidden="true">
@@ -229,10 +273,11 @@ export default function Navbar() {
               href="#home"
               onClick={() => {
                 setActive('#home');
-                closeMenu();
+                closeMenu(false);
+                focusTarget('#home');
               }}
             >
-              stayfoolish<span aria-hidden="true">.</span>
+              Krishna
             </a>
             <button
               type="button"
@@ -256,22 +301,22 @@ export default function Navbar() {
             </button>
           </div>
 
-          <p className="mono menu-title" id="menu-title">
-            Index
+          <p className="section-label menu-title" id="menu-title">
+            Menu
           </p>
 
           <nav aria-label="Mobile">
             <ul className="menu-list">
-              {LINKS.map((link, index) => (
+              {LINKS.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
                     onClick={() => {
                       setActive(link.href);
-                      closeMenu();
+                      closeMenu(false);
+                      focusTarget(link.href);
                     }}
                   >
-                    <span className="menu-index">0{index + 1}</span>
                     {link.label}
                   </a>
                 </li>
@@ -282,16 +327,17 @@ export default function Navbar() {
           <div className="menu-foot">
             <a
               className="btn btn-primary"
-              href="#contact"
-              onClick={() => {
-                setActive('#contact');
-                closeMenu();
-              }}
+              href={`mailto:${EMAIL}?subject=Hello%20Krishna`}
+              onClick={() => closeMenu(false)}
             >
-              Start a project
+              Email Krishna
             </a>
-            <a className="menu-email" href="mailto:agungkrishnananda@gmail.com">
-              agungkrishnananda@gmail.com
+            <a
+              className="menu-email"
+              href={`mailto:${EMAIL}`}
+              onClick={() => closeMenu(false)}
+            >
+              {EMAIL}
             </a>
           </div>
         </div>

@@ -8,7 +8,7 @@ developer. Built with the Next.js App Router and a hand-written CSS design syste
 - Next.js 16.4.4 (App Router, Turbopack)
 - React 19.3.1
 - Plain CSS with custom properties
-- `next/font` for Instrument Serif, IBM Plex Sans, and IBM Plex Mono
+- `next/font` for Newsreader and IBM Plex Sans
 - `next/image` for local image optimization
 
 No UI framework, animation library, or database is used. The site is fully static.
@@ -19,12 +19,13 @@ No UI framework, animation library, or database is used. The site is fully stati
 app/
 ├── components/
 │   ├── Navbar.jsx      # scroll state, active section, theme, focus-trapped menu
-│   ├── Hero.jsx        # first screen and portrait
-│   ├── About.jsx       # narrative, principles, toolkit
-│   ├── Services.jsx    # four-service ledger
-│   ├── Work.jsx        # featured project and concept studies
-│   ├── Contact.jsx     # contact band and social links
+│   ├── Hero.jsx        # title page and portrait plate
+│   ├── About.jsx       # narrative, working rules, toolkit
+│   ├── Services.jsx    # four-service schedule
+│   ├── Work.jsx        # featured project and concept plates
+│   ├── Contact.jsx     # reply section and social links
 │   ├── CopyEmail.jsx   # clipboard action with success and error feedback
+│   ├── Stamp.jsx       # shared status stamp
 │   └── Footer.jsx
 ├── globals.css         # design tokens, layout, components, responsive rules
 ├── layout.js           # fonts, metadata, JSON-LD, theme bootstrap
@@ -51,14 +52,17 @@ npm start        # serve the production build
 
 ## Design notes
 
-- Warm paper, deep pine, verdigris, and copper. The palette avoids the generic
-  blue-purple developer-gradient look and echoes the Balinese udeng in the portrait.
-- Instrument Serif carries the editorial voice; IBM Plex Sans and Mono keep the
-  technical details legible.
+- The design direction is documented in `DESIGN.md`. Warm paper, deep pine, and
+  copper carry the printed-ledger feel and echo the Balinese udeng in the portrait.
+- Newsreader carries the editorial voice; IBM Plex Sans keeps technical details
+  legible. No mono family is loaded.
 - One photograph, used once. Concept work is explicitly labelled as concept work.
+  The status stamp marks public work and concepts.
+- The copy is intentionally bilingual: English for structure and status, Indonesian
+  for explanation. Indonesian passages carry `lang="id"`.
 - Light and dark themes are both supported. The first visit follows the operating
   system preference; the toggle persists the choice in `localStorage`.
-- Motion is limited to entrance, hover, and press feedback. Scroll-triggered
+- Motion is limited to one hero entrance and hover/focus feedback. Scroll-triggered
   reveals are intentionally not used, and `prefers-reduced-motion` disables motion.
 - The mobile menu traps focus, locks background scroll, closes on Escape, and
   returns focus to the menu button.

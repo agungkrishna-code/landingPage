@@ -1,72 +1,56 @@
 import Image from 'next/image';
 
 export default function Hero() {
-  const year = new Date().getFullYear();
-
   return (
     <header className="hero" id="home">
       <div className="wrap hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">
-            <span>01</span> Web &amp; blockchain developer
-          </p>
+          <p className="hero-kicker">Junior web + chain developer</p>
 
           <h1 className="hero-title">
-            I build the interface
-            <br />
-            and the contract <em>behind it.</em>
+            I build the interface and the contract <em>behind it.</em>
           </h1>
 
-          <p className="hero-sub">
-            I am Krishna, a junior developer working across Next.js interfaces and
-            Solidity contracts. I care about readable code, honest UX, and products
-            that still work on a phone.
+          <p className="hero-sub" lang="id">
+            Saya Krishna, developer junior. Saya bangun interface Next.js dan
+            contract Solidity di baliknya. Fokus saya: label yang jelas, pesan
+            error yang berguna, dan layout yang tetap rapi di 390px.
           </p>
 
           <div className="hero-actions">
-            <a className="btn btn-primary" href="#work">
-              See selected work
-            </a>
             <a
-              className="btn btn-ghost"
-              href="mailto:agungkrishnananda@gmail.com?subject=Project%20inquiry"
+              className="btn btn-primary"
+              href="mailto:agungkrishnananda@gmail.com?subject=Hello%20Krishna"
             >
               Email Krishna
             </a>
+            <a className="text-link" href="#work">
+              See the work
+            </a>
           </div>
         </div>
 
-        <div className="hero-visual">
-          <div className="portrait-frame">
-            <div className="portrait-arch">
-              <Image
-                className="portrait-img"
-                src="/imgs/profile-removebg-preview.png"
-                alt="Krishna wearing a Balinese udeng"
-                width={400}
-                height={440}
-                priority
-                sizes="(max-width: 860px) 78vw, 430px"
-              />
-            </div>
-            <p className="portrait-badge">
-              <span className="status-dot" aria-hidden="true" />
-              Open for freelance and collaboration
-            </p>
+        <figure className="portrait-plate">
+          <div className="portrait-image">
+            <Image
+              src="/imgs/profile-removebg-preview.png"
+              alt="Krishna wearing a Balinese udeng"
+              width={400}
+              height={440}
+              priority
+              sizes="(max-width: 860px) 82vw, 420px"
+            />
           </div>
-          <p className="portrait-meta mono" aria-hidden="true">
-            <span>Next.js</span>
-            <span>Solidity</span>
-            <span>EVM</span>
-          </p>
-        </div>
+          <figcaption lang="id">
+            Krishna, dengan udeng. Foto apa adanya, bukan headshot studio.
+          </figcaption>
+        </figure>
       </div>
 
-      <div className="wrap hero-foot mono">
-        <span>Portfolio / {year}</span>
-        <a className="scroll-cue" href="#about">
-          Scroll to read <span aria-hidden="true">&#8595;</span>
-        </a>
+      <div className="wrap hero-rail">
+        <span>Balinese-Indonesian</span>
+        <span>Interface + contract</span>
+        <span>Open to work</span>
       </div>
     </header>
   );
