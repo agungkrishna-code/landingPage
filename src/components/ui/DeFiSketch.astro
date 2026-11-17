@@ -1,0 +1,98 @@
+---
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const {
+  label = 'Abstract concept sketch of a liquidity curve with two position markers',
+  class: className,
+} = Astro.props;
+---
+
+<svg
+  class:list={['sketch', className]}
+  viewBox="0 0 640 360"
+  role="img"
+  aria-label={label}
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g stroke="var(--color-line)" stroke-width="1">
+    <path d="M64 52h512M64 104h512M64 156h512M64 208h512M64 260h512"></path>
+    <path d="M160 36v284M256 36v284M352 36v284M448 36v284" opacity=".55"></path>
+  </g>
+
+  <g fill="none" stroke="var(--color-line-strong)" stroke-width="1.2">
+    <path d="M64 312h512M64 312V44"></path>
+  </g>
+
+  <path
+    d="M64 312C190 312 208 96 576 96"
+    fill="none"
+    stroke="var(--color-pine)"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  ></path>
+  <path
+    d="M64 312C190 312 208 96 576 96V312Z"
+    fill="var(--color-pine)"
+    opacity=".055"
+  ></path>
+
+  <g stroke="var(--color-copper)" stroke-width="1" stroke-dasharray="2 5">
+    <path d="M246 226v-62"></path>
+    <path d="M430 138V88"></path>
+  </g>
+
+  <circle cx="246" cy="226" r="5" fill="var(--color-copper)"></circle>
+  <circle cx="430" cy="138" r="5" fill="var(--color-pine)"></circle>
+  <circle cx="430" cy="138" r="9" fill="none" stroke="var(--color-pine)" opacity=".35"></circle>
+
+  <g>
+    <rect
+      x="218"
+      y="152"
+      width="122"
+      height="44"
+      fill="var(--color-chalk)"
+      stroke="var(--color-line-strong)"
+      stroke-width="1"
+    ></rect>
+    <text x="230" y="169" class="sketch-label">POSITION</text>
+    <text x="230" y="185" class="sketch-value">POOL A</text>
+  </g>
+
+  <g class="sketch-label">
+    <text x="64" y="336">LIQUIDITY</text>
+    <text x="536" y="336">PRICE</text>
+    <text x="64" y="26">FIG. 01</text>
+  </g>
+
+  <g stroke="var(--color-line-strong)" fill="none" stroke-width="1.2">
+    <path d="M552 64h14v14"></path>
+  </g>
+</svg>
+
+<style>
+  .sketch {
+    width: 100%;
+    height: 100%;
+  }
+
+  .sketch text {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .sketch-label {
+    fill: var(--color-muted);
+  }
+
+  .sketch-value {
+    fill: var(--color-ink);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+</style>

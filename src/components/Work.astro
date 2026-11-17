@@ -1,0 +1,657 @@
+---
+import { Picture } from 'astro:assets';
+import coin from '../assets/shitcoin.jpg';
+import { work } from '../data/site';
+import DeFiSketch from './ui/DeFiSketch.astro';
+import NftSketch from './ui/NftSketch.astro';
+
+const total = String(work.projects.length).padStart(2, '0');
+---
+
+<section class="work" id="work" data-work>
+  <div class="work-pin" data-work-pin>
+    <div class="wrap work-head" data-reveal-group>
+      <div class="work-heading">
+        <p class="section-label" data-reveal-child>{work.label}</p>
+        <h2 class="section-title" data-reveal-child>
+          {work.titleLead} <em>{work.titleAccent}</em> {work.titleTail}
+        </h2>
+      </div>
+      <p class="section-intro" lang="id" data-reveal-child>{work.intro}</p>
+    </div>
+
+    <div
+      class="work-viewport"
+      data-work-viewport
+      tabindex="0"
+      role="region"
+      aria-label="Project plates"
+    >
+      <div class="work-track" data-work-track>
+        {work.projects.map((project, index) => {
+          const href = 'href' in project ? project.href : undefined;
+          const stampTone =
+            project.kind === 'public'
+              ? 'stamp-pine'
+              : project.kind === 'concept'
+                ? 'stamp-copper'
+                : 'stamp-dark';
+
+          return (
+            <article
+              class:list={['work-card', { 'is-cta': project.kind === 'cta' }]}
+              data-work-card
+              aria-labelledby={`work-title-${index}`}
+            >
+              <div class="work-media">
+                <div class="work-media-inner" data-work-parallax>
+                  {project.kind === 'public' && (
+                    <div class="coin-frame">
+                      <Picture
+                        src={coin}
+                        alt={project.imageAlt}
+                        formats={['avif', 'webp']}
+                        fallbackFormat="webp"
+                        widths={[240, 400]}
+                        sizes="(max-width: 767px) 52vw, 220px"
+                        loading="lazy"
+                        decoding="async"
+                        class="coin-img"
+                      />
+                    </div>
+                  )}
+
+                  {project.kind === 'concept' && index === 1 && (
+                    <DeFiSketch label={project.imageAlt} />
+                  )}
+
+                  {project.kind === 'concept' && index === 2 && (
+                    <NftSketch label={project.imageAlt} />
+                  )}
+
+                  {project.kind === 'cta' && (
+                    <svg
+                      viewBox="0 0 640 360"
+                      class="branch-sketch"
+                      role="img"
+                      aria-label="A simple branch diagram with commits on a main line"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <g stroke="var(--color-on-dark-line)" stroke-width="1">
+                        <path d="M64 72h512M64 144h512M64 216h512M64 288h512"></path>
+                      </g>
+                      <path
+                        d="M96 238h448"
+                        stroke="var(--color-mint)"
+                        stroke-width="1.6"
+                      ></path>
+                      <path
+                        d="M228 238v-74h150"
+                        fill="none"
+                        stroke="var(--color-copper)"
+                        stroke-width="1.4"
+                      ></path>
+                      <path
+                        d="M378 164h112"
+                        fill="none"
+                        stroke="var(--color-copper)"
+                        stroke-width="1.4"
+                        stroke-dasharray="3 6"
+                      ></path>
+                      <circle cx="96" cy="238" r="4.5" fill="var(--color-mint)"></circle>
+                      <circle cx="228" cy="238" r="4.5" fill="var(--color-mint)"></circle>
+                      <circle cx="378" cy="238" r="4.5" fill="var(--color-mint)"></circle>
+                      <circle cx="544" cy="238" r="4.5" fill="var(--color-mint)"></circle>
+                      <circle cx="378" cy="164" r="4.5" fill="var(--color-copper)"></circle>
+                      <g class="branch-label">
+                        <text x="88" y="266">INIT</text>
+                        <text x="208" y="266">BUILD LOG</text>
+                        <text x="500" y="266">MAIN</text>
+                        <text x="388" y="148">FEATURE</text>
+                      </g>
+                      <g class="branch-label">
+                        <text x="64" y="46">REPOSITORIES</text>
+                        <text x="540" y="46">OPEN SOURCE</text>
+                      </g>
+                    </svg>
+                  )}
+                </div>
+
+                <span class:list={['stamp work-stamp', stampTone]}>
+                  {project.stamp}
+                </span>
+                <span class="work-number" aria-hidden="true">{project.number}</span>
+              </div>
+
+              <div class="work-body">
+                <h3 id={`work-title-${index}`}>{project.title}</h3>
+                <p lang="id">{project.description}</p>
+
+                <ul class="tags" aria-label={`${project.title} topics`}>
+                  {project.tags.map((tag) => <li>{tag}</li>)}
+                </ul>
+
+                <div class="work-card-foot">
+                  {href ? (
+                    <a
+                      class="work-link"
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {project.linkLabel}
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M7 17L17 7M8 7h9v9"></path>
+                      </svg>
+                      <span class="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    <span class="work-status">
+                      <span class="status-dot" aria-hidden="true"></span>
+                      Not shipped
+                    </span>
+                  )}
+
+                  <span class="work-plate-index" aria-hidden="true">
+                    {project.number} / {total}
+                  </span>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+
+    <div class="wrap work-foot">
+      <p class="work-count" aria-live="off">
+        <span data-work-count>01</span>
+        <span class="count-total">/ {total}</span>
+      </p>
+      <p class="work-hint work-hint-desktop">{work.scrollHint}</p>
+      <p class="work-hint work-hint-mobile">{work.swipeHint}</p>
+      <div class="work-progress" aria-hidden="true">
+        <span data-work-bar></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    position: relative;
+    border-top: 1px solid var(--color-line);
+    border-image: var(--grad-rule) 1;
+  }
+
+  .work-pin {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    align-items: end;
+    padding-block: clamp(64px, 8vw, 96px) clamp(26px, 4vw, 40px);
+  }
+
+  .work-head .section-intro {
+    max-width: 42ch;
+  }
+
+  .work-viewport {
+    --edge: max(
+      clamp(20px, 4vw, 48px),
+      calc((100vw - 1240px) / 2 + clamp(20px, 4vw, 48px))
+    );
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-padding-left: var(--edge);
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .work-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .work-viewport:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+  }
+
+  .work-track {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    padding-inline: calc(var(--edge) - 1px) var(--edge);
+  }
+
+  .work-card {
+    position: relative;
+    display: flex;
+    width: min(82vw, 460px);
+    flex: none;
+    flex-direction: column;
+    border: 1px solid var(--color-line-strong);
+    border-top-color: transparent;
+    background-color: var(--color-chalk);
+    background-image: var(--grad-rule-strong), var(--card-wash);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 100% 1px, 100% 100%;
+    background-position: left top, left top;
+    background-origin: border-box, border-box;
+    scroll-snap-align: start;
+  }
+
+  .work-media {
+    position: relative;
+    height: clamp(178px, 25vh, 232px);
+    flex: none;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+  }
+
+  .work-media-inner {
+    position: absolute;
+    inset: -5% -4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    will-change: transform;
+  }
+
+  .coin-frame {
+    position: relative;
+    width: min(55%, 190px);
+    padding: 8px;
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-chalk);
+    transform: rotate(-3deg);
+  }
+
+  .coin-frame::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid var(--color-line);
+    pointer-events: none;
+  }
+
+  .coin-frame picture {
+    display: block;
+  }
+
+  .coin-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .work-media :global(.sketch) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .branch-sketch {
+    width: 100%;
+    height: 100%;
+  }
+
+  .branch-sketch text {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .branch-label {
+    fill: var(--color-on-dark-soft);
+  }
+
+  .work-stamp {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+  }
+
+  .stamp-pine {
+    color: var(--color-pine);
+    --stamp-bg: var(--color-paper-2);
+  }
+
+  .stamp-copper {
+    color: var(--color-copper);
+    --stamp-bg: var(--color-paper-2);
+  }
+
+  .stamp-dark {
+    color: var(--color-mint);
+    --stamp-bg: var(--color-pine-deep);
+  }
+
+  .work-number {
+    position: absolute;
+    bottom: 10px;
+    left: 18px;
+    z-index: 2;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .work-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: clamp(22px, 2.6vw, 30px);
+  }
+
+  .work-body h3 {
+    max-width: 13ch;
+    font-size: clamp(1.65rem, 2.4vw, 2.05rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .work-body > p {
+    max-width: 46ch;
+    margin-top: 12px;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .work-body .tags {
+    margin-top: 18px;
+  }
+
+  .work-card-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 22px;
+  }
+
+  .work-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-ink);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .work-link svg {
+    color: var(--color-copper);
+    transition: transform 0.2s var(--ease-ledger);
+  }
+
+  .work-link:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  .work-status {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-copper);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .status-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .work-plate-index {
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .is-cta {
+    border-color: var(--color-pine-deep);
+    border-top-color: transparent;
+    background-color: var(--color-pine-deep);
+    background-image: var(--grad-rule-on-dark), var(--card-wash);
+    color: var(--color-on-dark);
+  }
+
+  .is-cta .work-media {
+    border-bottom-color: var(--color-on-dark-line);
+    background: var(--color-pine-deep);
+  }
+
+  .is-cta .work-body > p {
+    color: var(--color-on-dark-soft);
+  }
+
+  .is-cta .tags li {
+    border-color: var(--color-on-dark-line);
+    color: var(--color-on-dark);
+  }
+
+  .is-cta .work-link {
+    color: var(--color-on-dark);
+  }
+
+  .is-cta .work-link svg {
+    color: var(--color-mint);
+  }
+
+  .is-cta :focus-visible {
+    outline-color: var(--color-mint);
+  }
+
+  .is-cta .work-number,
+  .is-cta .work-plate-index {
+    color: var(--color-on-dark-soft);
+  }
+
+  .work-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 14px;
+    border-top: 1px solid var(--color-line-strong);
+    border-image: var(--grad-rule-strong) 1;
+  }
+
+  .work-count {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .count-total {
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+  }
+
+  .work-hint {
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  .work-hint-desktop {
+    display: none;
+  }
+
+  .work-progress {
+    display: none;
+    width: 150px;
+    height: 1px;
+    overflow: hidden;
+    background: var(--color-line);
+  }
+
+  .work-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--color-copper);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  @media (min-width: 768px) {
+    .work-head {
+      grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+      gap: 40px;
+    }
+
+    .work-track {
+      gap: 22px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .work.is-pinned .work-pin {
+      height: calc(100svh - 72px);
+    }
+
+    .work.is-pinned .work-head {
+      flex: none;
+      padding-block: clamp(20px, 4vh, 38px) clamp(18px, 2.6vh, 26px);
+    }
+
+    .work.is-pinned .work-head .section-title {
+      font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    }
+
+    .work.is-pinned .work-viewport {
+      flex: 1;
+      overflow: hidden;
+      scroll-snap-type: none;
+    }
+
+    .work.is-pinned .work-track {
+      height: 100%;
+      align-items: stretch;
+      gap: 24px;
+    }
+
+    .work.is-pinned .work-card {
+      width: min(44vw, 620px);
+      height: 100%;
+    }
+
+    .work.is-pinned .coin-frame {
+      width: min(43%, 180px);
+    }
+
+    .work.is-pinned .work-media {
+      height: clamp(190px, 27vh, 250px);
+    }
+
+    .work.is-pinned .work-foot {
+      flex: none;
+      padding-block: 10px 12px;
+    }
+
+    .work-hint-mobile,
+    .work-hint-desktop {
+      display: block;
+    }
+
+    .work-hint-mobile {
+      display: none;
+    }
+
+    .work-progress {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) and (min-width: 768px) {
+    .work-viewport {
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+
+    .work-track {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      padding: 0 var(--edge) 28px;
+    }
+
+    .work-card {
+      width: auto;
+      height: auto;
+    }
+
+    .work-foot {
+      display: none;
+    }
+  }
+
+  @media (max-height: 760px) and (min-width: 1024px) {
+    .work.is-pinned .work-head {
+      padding-block: 16px;
+    }
+
+    .work.is-pinned .work-media {
+      height: 170px;
+    }
+
+    .work-body {
+      padding: 18px;
+    }
+
+    .work-body h3 {
+      font-size: 1.6rem;
+    }
+
+    .work-body > p {
+      margin-top: 8px;
+      font-size: 0.82rem;
+    }
+
+    .work-body .tags {
+      margin-top: 12px;
+    }
+
+    .work-card-foot {
+      padding-top: 12px;
+    }
+  }
+</style>

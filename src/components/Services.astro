@@ -1,0 +1,390 @@
+---
+import { services, site } from '../data/site';
+---
+
+<section class="services" id="services" data-services>
+  <div class="services-pin" data-services-pin>
+    <div class="wrap services-layout">
+      <div class="services-aside">
+        <div class="services-head" data-reveal-group>
+          <p class="section-label" data-reveal-child>{services.label}</p>
+          <h2 class="section-title" data-reveal-child>
+            {services.titleLead} <em>{services.titleAccent}</em>
+          </h2>
+          <p class="section-intro" lang="id" data-reveal-child>{services.intro}</p>
+        </div>
+
+        <div class="service-meter" aria-hidden="true">
+          <p class="meter-count">
+            <span data-service-current>01</span>
+            <span class="meter-total">/ 04</span>
+          </p>
+          <div class="service-ticks">
+            {services.items.map((_, index) => (
+              <span
+                class:list={['service-tick', { 'is-active': index === 0 }]}
+                data-service-tick
+              ></span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="services-stage">
+        {services.items.map((service, index) => (
+          <article
+            class="service-card"
+            data-service-card
+            aria-labelledby={`service-title-${index}`}
+          >
+            <div class="card-top">
+              <span class="card-kicker">Capability</span>
+              <span class="card-num" aria-hidden="true">{service.number}</span>
+            </div>
+
+            <div class="card-main">
+              <h3 id={`service-title-${index}`}>{service.title}</h3>
+              <p lang="id">{service.description}</p>
+              <p class="card-margin">{service.margin}</p>
+            </div>
+
+            <div class="card-foot">
+              <ul class="tags" aria-label={`${service.title} tools`}>
+                {service.tags.map((tag) => <li>{tag}</li>)}
+              </ul>
+              <span class="card-index" aria-hidden="true">
+                0{index + 1} / 0{services.items.length}
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <div class="service-progress" aria-hidden="true">
+      <span data-service-bar></span>
+    </div>
+  </div>
+
+  <div class="wrap services-outro" data-reveal>
+    <div>
+      <h3>{services.outro.title}</h3>
+      <p lang="id">{services.outro.text}</p>
+    </div>
+    <a class="text-link" href={site.mailto}>{services.outro.linkLabel}</a>
+  </div>
+</section>
+
+<style>
+  .services {
+    position: relative;
+    border-top: 1px solid var(--color-line);
+    border-image: var(--grad-rule) 1;
+  }
+
+  .services-pin {
+    position: relative;
+  }
+
+  .services-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 48px);
+    padding-block: clamp(76px, 9vw, 128px);
+  }
+
+  .services-head {
+    display: flex;
+    max-width: 30rem;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .services-head .section-intro {
+    margin-top: 4px;
+  }
+
+  .service-meter {
+    display: none;
+    align-items: flex-end;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .meter-count {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--color-pine);
+    font-family: var(--font-serif);
+    font-size: 2.6rem;
+    line-height: 1;
+  }
+
+  .meter-total {
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .service-ticks {
+    display: flex;
+    gap: 5px;
+    padding-bottom: 9px;
+  }
+
+  .service-tick {
+    display: block;
+    width: 26px;
+    height: 1px;
+    background: var(--color-line-strong);
+    opacity: 0.5;
+    transition: opacity 0.25s var(--ease-ledger);
+  }
+
+  .service-tick.is-active {
+    background: var(--color-copper);
+    opacity: 1;
+  }
+
+  .services-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .service-card {
+    position: relative;
+    display: flex;
+    min-height: 320px;
+    flex-direction: column;
+    padding: clamp(22px, 3.2vw, 38px);
+    border: 1px solid var(--color-line-strong);
+    border-top-color: transparent;
+    background-color: var(--color-chalk);
+    background-image: var(--card-wash);
+  }
+
+  .service-card::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: clamp(22px, 3.2vw, 38px);
+    z-index: 2;
+    width: 42px;
+    height: 2px;
+    background-color: var(--color-copper);
+    background-image: linear-gradient(
+      90deg,
+      var(--color-copper) 0%,
+      color-mix(in srgb, var(--color-copper) 30%, transparent) 100%
+    );
+  }
+
+  .service-card::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    left: -1px;
+    height: 1px;
+    background: var(--grad-rule-strong);
+    pointer-events: none;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .card-kicker {
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .card-num {
+    color: var(--color-pine);
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 0.8;
+  }
+
+  .card-main {
+    max-width: 33rem;
+    margin-block: auto;
+    padding-block: clamp(36px, 6vh, 58px);
+  }
+
+  .card-main h3 {
+    font-size: clamp(1.9rem, 3.6vw, 3rem);
+    letter-spacing: -0.03em;
+  }
+
+  .card-main p {
+    max-width: 44ch;
+    margin-top: 14px;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .card-main .card-margin {
+    max-width: 42ch;
+    margin-top: 22px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line);
+    border-image: var(--grad-rule) 1;
+    color: var(--color-ink-soft);
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 1.5vw, 1.12rem);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .card-index {
+    flex: none;
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .service-progress {
+    display: none;
+  }
+
+  .services-outro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    align-items: end;
+    padding-block: clamp(34px, 5vw, 56px);
+    border-top: 1px solid var(--color-line-strong);
+    border-image: var(--grad-rule-strong) 1;
+  }
+
+  .services-outro h3 {
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+  }
+
+  .services-outro p {
+    max-width: 46ch;
+    margin-top: 6px;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .services-outro .text-link {
+    justify-self: start;
+  }
+
+  @media (min-width: 768px) {
+    .services-layout {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      align-items: start;
+      gap: clamp(40px, 5vw, 72px);
+    }
+
+    .services-outro {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 32px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .services.is-pinned .services-pin {
+      display: flex;
+      height: calc(100svh - 72px);
+      flex-direction: column;
+    }
+
+    .services.is-pinned .services-layout {
+      height: 100%;
+      flex: 1;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: clamp(48px, 6vw, 92px);
+      align-items: stretch;
+      padding-block: clamp(30px, 5vh, 56px) clamp(26px, 4vh, 44px);
+    }
+
+    .services.is-pinned .services-aside {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-block: 4px;
+    }
+
+    .services.is-pinned .service-meter {
+      display: flex;
+    }
+
+    .services.is-pinned .services-stage {
+      position: relative;
+      display: block;
+      min-height: 0;
+    }
+
+    .services.is-pinned .service-card {
+      position: absolute;
+      inset: 0;
+      min-height: 0;
+    }
+
+    .services.is-pinned .service-progress {
+      position: absolute;
+      top: clamp(30px, 5vh, 56px);
+      right: clamp(20px, 2.5vw, 40px);
+      bottom: clamp(26px, 4vh, 44px);
+      display: block;
+      width: 1px;
+      background: var(--color-line);
+    }
+
+    .services.is-pinned .service-progress span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--color-pine);
+      transform: scaleY(0);
+      transform-origin: top center;
+    }
+
+    .services-outro {
+      padding-block: 44px;
+    }
+  }
+
+  @media (max-height: 760px) and (min-width: 1024px) {
+    .services.is-pinned .services-layout {
+      padding-block: 24px;
+    }
+
+    .card-main {
+      padding-block: 28px;
+    }
+
+    .card-main h3 {
+      font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+    }
+
+    .card-main .card-margin {
+      margin-top: 14px;
+    }
+  }
+</style>

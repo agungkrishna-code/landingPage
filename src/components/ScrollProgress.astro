@@ -1,0 +1,22 @@
+<div class="scroll-progress" aria-hidden="true">
+  <span data-scroll-progress></span>
+</div>
+
+<style>
+  .scroll-progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 90;
+    height: 3px;
+    pointer-events: none;
+  }
+
+  .scroll-progress span {
+    display: block;
+    height: 100%;
+    background: var(--color-copper);
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+  }
+</style>

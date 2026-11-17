@@ -1,0 +1,144 @@
+---
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const {
+  label = 'Abstract concept sketch of a token grid with one minted token',
+  class: className,
+} = Astro.props;
+---
+
+<svg
+  class:list={['sketch', className]}
+  viewBox="0 0 640 360"
+  role="img"
+  aria-label={label}
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g stroke="var(--color-line)" stroke-width="1">
+    <path d="M64 76h512M64 140h512M64 204h512M64 268h512"></path>
+  </g>
+
+  <g>
+    <rect
+      x="64"
+      y="158"
+      width="48"
+      height="48"
+      fill="var(--color-chalk)"
+      stroke="var(--color-line-strong)"
+      stroke-width="1"
+    ></rect>
+    <circle
+      cx="88"
+      cy="182"
+      r="10"
+      fill="none"
+      stroke="var(--color-line-strong)"
+      stroke-width="1.2"
+    ></circle>
+    <path
+      d="M112 182h58"
+      stroke="var(--color-copper)"
+      stroke-width="1.2"
+      stroke-dasharray="3 5"
+    ></path>
+  </g>
+
+  <path d="M188 226h388" stroke="var(--color-line-strong)" stroke-width="1"></path>
+
+  {[0, 1, 2, 3, 4].map((token) => {
+    const x = 188 + token * 78;
+    const minted = token === 2;
+    return (
+      <g>
+        <path
+          d={`M${x} 226v-48a30 30 0 0 1 60 0v48z`}
+          fill={minted ? 'var(--color-pine)' : 'var(--color-chalk)'}
+          stroke={minted ? 'var(--color-pine)' : 'var(--color-line-strong)'}
+          stroke-width="1.2"
+        />
+        <circle
+          cx={x + 30}
+          cy="178"
+          r="7"
+          fill="none"
+          stroke={minted ? 'var(--color-paper)' : 'var(--color-line-strong)'}
+          stroke-width="1.2"
+        />
+        <text
+          x={x + 30}
+          y="212"
+          text-anchor="middle"
+          class={minted ? 'sketch-minted-label' : 'sketch-label'}
+        >
+          {String(token + 1).padStart(2, '0')}
+        </text>
+      </g>
+    );
+  })}
+
+  <g>
+    <path
+      d="M384 176v-34"
+      stroke="var(--color-copper)"
+      stroke-width="1"
+      stroke-dasharray="2 4"
+    ></path>
+    <rect
+      x="338"
+      y="116"
+      width="92"
+      height="28"
+      fill="var(--color-chalk)"
+      stroke="var(--color-line-strong)"
+      stroke-width="1"
+    ></rect>
+    <text x="350" y="134" class="sketch-value">MINTED</text>
+  </g>
+
+  <g class="sketch-label">
+    <text x="64" y="336">TOKEN GRID</text>
+    <text x="540" y="336">MINT</text>
+    <text x="64" y="42">FIG. 02</text>
+  </g>
+
+  <path
+    d="M548 70l14 0 0 14"
+    fill="none"
+    stroke="var(--color-line-strong)"
+    stroke-width="1.2"
+  ></path>
+</svg>
+
+<style>
+  .sketch {
+    width: 100%;
+    height: 100%;
+  }
+
+  .sketch text {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .sketch-label {
+    fill: var(--color-muted);
+  }
+
+  .sketch-value {
+    fill: var(--color-ink);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .sketch-minted-label {
+    fill: var(--color-paper);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+</style>

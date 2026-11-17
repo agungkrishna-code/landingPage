@@ -1,0 +1,90 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? new URL(site.url));
+const ogImage = new URL('/og.png', Astro.site ?? new URL(site.url));
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.fullName,
+  alternateName: [site.name, 'agungkrishnananda'],
+  url: site.url,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Junior Web and Blockchain Developer',
+  description: site.description,
+  sameAs: site.socials.map((social) => social.href),
+  knowsAbout: [
+    'Web development',
+    'Next.js',
+    'React',
+    'Solidity',
+    'EVM',
+    'dApps',
+    'REST APIs',
+  ],
+};
+
+const themeInit = `(function(){try{var saved=localStorage.getItem('kr-theme');var dark=window.matchMedia('(prefers-color-scheme: dark)').matches;var theme=saved==='light'||saved==='dark'?saved:(dark?'dark':'light');document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',theme==='dark'?'#0e1411':'#f3eddf');}catch(e){}})();`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f3eddf" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Krishna Portfolio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Krishna, junior web and blockchain developer." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <Font cssVariable="--font-newsreader" preload />
+    <Font cssVariable="--font-plex" preload />
+
+    <script is:inline set:html={themeInit} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(personSchema)}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

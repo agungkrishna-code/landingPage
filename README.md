@@ -1,83 +1,113 @@
 # Krishna Portfolio
 
-Personal landing page for Krishna (agungkrishnananda), a junior web and blockchain
-developer. Built with the Next.js App Router and a hand-written CSS design system.
+Personal portfolio for Krishna (Dewa Gede Agung Krishnananda Sudewa), a junior web
+and blockchain developer. Static Astro site with a printed-ledger design.
+
+Live: https://agungkrishnananda.vercel.app
 
 ## Stack
 
-- Next.js 16.4.4 (App Router, Turbopack)
-- React 19.3.1
-- Plain CSS with custom properties
-- `next/font` for Newsreader and IBM Plex Sans
-- `next/image` for local image optimization
+- Astro 7.4.12, static output
+- Tailwind CSS 4.3.5 through `@tailwindcss/vite`, CSS-first `@theme` tokens in `src/styles/global.css`
+- GSAP 3.15.1 with ScrollTrigger
+- Lenis 1.3.27, synced to the GSAP ticker and ScrollTrigger
+- Newsreader and IBM Plex Sans, self-hosted through Astro's Fonts API
+- TypeScript 6, `@astrojs/check`, `@astrojs/sitemap`
+- Deployed on Vercel
 
-No UI framework, animation library, or database is used. The site is fully static.
+No database, backend, auth, CMS, or client-side framework. Node 22.23.4 or newer.
+
+## Run
+
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # astro check && astro build
+npm run preview  # serve the built site
+npm run check    # types and Astro diagnostics
+```
 
 ## Structure
 
 ```text
-app/
-├── components/
-│   ├── Navbar.jsx      # scroll state, active section, theme, focus-trapped menu
-│   ├── Hero.jsx        # title page and portrait plate
-│   ├── About.jsx       # narrative, working rules, toolkit
-│   ├── Services.jsx    # four-service schedule
-│   ├── Work.jsx        # featured project and concept plates
-│   ├── Contact.jsx     # reply section and social links
-│   ├── CopyEmail.jsx   # clipboard action with success and error feedback
-│   ├── Stamp.jsx       # shared status stamp
-│   └── Footer.jsx
-├── globals.css         # design tokens, layout, components, responsive rules
-├── layout.js           # fonts, metadata, JSON-LD, theme bootstrap
-├── page.js             # section composition
-├── not-found.js        # custom 404
-├── error.js            # route error boundary
-├── opengraph-image.js  # generated social card
-├── icon.svg            # favicon
-├── robots.js
-└── sitemap.js
-public/imgs/            # portrait, project image, legacy icons
-public/krishna-cv.pdf   # downloadable CV, linked from About
+astro.config.mjs               site URL, sitemap, font sources, Tailwind plugin
+src/pages/index.astro          page composition
+src/pages/404.astro            standalone not-found page
+src/layouts/Base.astro         document shell, metadata, fonts, theme init, JSON-LD
+src/components/Nav.astro       sticky nav, theme toggle, mobile menu
+src/components/Hero.astro      headline, portrait, fact rail
+src/components/About.astro     narrative, working rules, toolkit, CV link
+src/components/Services.astro  four-service pinned deck
+src/components/Work.astro      horizontal project plates
+src/components/Contact.astro   reply band, email copy, socials
+src/components/Footer.astro    footer meta and back to top
+src/components/ScrollProgress.astro  top progress bar
+src/components/ui/             DeFi and NFT concept sketches (SVG)
+src/data/site.ts               page copy, nav, socials, email, CV path
+src/lib/motion.ts              shared motion constants
+src/lib/animations.ts          GSAP timelines and ScrollTrigger setup
+src/lib/smooth-scroll.ts       Lenis setup and ScrollTrigger sync
+src/lib/ui.ts                  theme toggle, nav, mobile menu, copy email
+src/scripts/main.ts            client entry point
+src/styles/global.css          Tailwind import, design tokens, shared styles
+src/assets/                    portrait.png, shitcoin.jpg
+public/                        favicon.svg, og.png, robots.txt, krishna-cv.pdf
 ```
 
-## Scripts
+## Editing content
 
-```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run lint     # ESLint
-npm run build    # production build
-npm start        # serve the production build
-```
+Site copy lives in `src/data/site.ts`: hero, about, services, work, contact,
+footer, nav, email, and social links. A few fixed UI labels such as "Open to work",
+"Not shipped", and "Capability" stay in their components.
 
-## Design notes
+- Portrait: `src/assets/portrait.png`
+- Work image: `src/assets/shitcoin.jpg`
+- CV: `public/krishna-cv.pdf`, linked from About. Keep the filename.
+- Email and socials: `site.ts`. The contact section and mail links read from it.
 
-- The design direction is documented in `DESIGN.md`. Warm paper, deep pine, and
-  copper carry the printed-ledger feel and echo the Balinese udeng in the portrait.
-- Newsreader carries the editorial voice; IBM Plex Sans keeps technical details
-  legible. No mono family is loaded.
-- One photograph, used once. Concept work is explicitly labelled as concept work.
-  The status stamp marks public work and concepts.
-- The copy is intentionally bilingual: English for structure and status, Indonesian
-  for explanation. Indonesian passages carry `lang="id"`.
-- Light and dark themes are both supported. The first visit follows the operating
-  system preference; the toggle persists the choice in `localStorage`.
-- Motion is limited to one hero entrance and hover/focus feedback. Scroll-triggered
-  reveals are intentionally not used, and `prefers-reduced-motion` disables motion.
-- The mobile menu traps focus, locks background scroll, closes on Escape, and
-  returns focus to the menu button.
+## Animation
 
-## Content to verify before publishing
+Edit `src/lib/motion.ts` to change the shared feel:
 
-- The hero stat row (10+ projects, 3 EVM chains, 100% open source) was removed
-  because the figures could not be confirmed. Do not reintroduce them without
-  verified counts.
-- `public/krishna-cv.pdf` is the downloadable CV linked from About. Replace the
-  file in place when the CV is updated; keep the filename stable.
-- `mailto:` addresses and social profile URLs are the ones supplied by the owner.
-- Concept studies have no public demo and are not linked as if they did.
+- `ease`: `power3.out`
+- `duration`: 0.9s default
+- `heroDuration`: 1.05s
+- `stagger`: 0.07s
+- `revealY`: 26px
+- `parallax`: 40px, used by the hero portrait and copy drift
 
-## Historical documents
+Section-specific timing lives in `src/lib/animations.ts`: hero offsets, reveal
+start points (`top 88%` and `top 84%`), the 1.1s hairline draw, pinned services
+crossfades, horizontal work distance, and the ±3% work-plate parallax. Lenis speed
+is the `duration: 1.05` in `src/lib/smooth-scroll.ts`. Hover and focus transitions
+are CSS durations in the component styles.
 
-`implementation_plan.md` and `BUG_FIXES.md` describe earlier iterations. Some file
-names in them no longer exist. Treat this README and the source as current.
+## Responsive and motion behaviour
+
+- Pins only at 1024px and wider: the services deck and the horizontal work plates.
+- Below 1024px: services stack vertically; work is a native scroll-snap carousel.
+- `prefers-reduced-motion` disables Lenis, hero word splitting, pins, reveals, and
+  parallax. At 768px and wider, Work becomes a static two-column grid so no plates
+  are hidden. The 3px scroll progress bar still tracks position; CSS removes the
+  remaining animation and transition time.
+- GSAP animates transform and opacity only. Colour and underline changes are CSS
+  transitions.
+
+## Content rules
+
+- Do not add testimonials, client logos, statistics, or outcome claims. There is no
+  evidence for them.
+- Concept studies are labelled "Concept" and have no demo link. Do not link them as
+  shipped.
+- English carries structure; Indonesian carries explanation. Indonesian passages use
+  `lang="id"`.
+- The copy names Next.js because it is part of Krishna's toolkit. This site is Astro.
+
+## Old version
+
+The previous Next.js portfolio is preserved in git on branch
+`next-portfolio-snapshot`. It is not part of the current build.
+
+`implementation_plan.md` and `BUG_FIXES.md` are pre-Astro records. Their Next.js
+paths, component names, and visual direction are stale. This README, `DESIGN.md`,
+`PRODUCT.md`, and `src/` are current.

@@ -1,7 +1,6 @@
 node_modules
-.next
-app-globals.css
-index.html
-assets/
+dist
+.astro
 .vercel
 .env*
+.DS_Store

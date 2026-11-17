@@ -1,0 +1,375 @@
+---
+import { nav, site } from '../data/site';
+---
+
+<header class="site-nav" data-site-nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="#home" aria-label="Krishna, back to top">
+      Krishna<span aria-hidden="true">.</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary">
+      {nav.map((item) => (
+        <a class="nav-link" href={item.href} data-nav-link>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="nav-actions">
+      <button
+        class="icon-btn theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="Switch to dark theme"
+      >
+        <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+        </svg>
+        <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.4 14.2A8.5 8.5 0 0 1 9.8 3.6 8.5 8.5 0 1 0 20.4 14.2Z"></path>
+        </svg>
+      </button>
+
+      <a class="btn btn-primary btn-sm nav-mail" href={site.mailto}>Email Krishna</a>
+
+      <button
+        class="icon-btn menu-toggle"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="sr-only" data-menu-label>Open menu</span>
+        <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="mobile-menu"
+    id="mobile-menu"
+    data-mobile-menu
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="menu-title"
+    inert
+  >
+    <div class="wrap menu-inner">
+      <p class="section-label" id="menu-title">Menu</p>
+
+      <nav class="menu-nav" aria-label="Mobile">
+        {nav.map((item) => (
+          <a class="menu-link" href={item.href} data-menu-link>
+            <span>{item.label}</span>
+            <span class="menu-line" aria-hidden="true"></span>
+          </a>
+        ))}
+      </nav>
+
+      <div class="menu-foot">
+        <p class="small-label">Email</p>
+        <a class="menu-mail" href={site.mailto}>{site.email}</a>
+        <p class="menu-note" lang="id">Terbuka untuk freelance, posisi junior, dan kolaborasi.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s var(--ease-ledger);
+  }
+
+  .site-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-nav);
+    -webkit-backdrop-filter: blur(14px) saturate(1.08);
+    backdrop-filter: blur(14px) saturate(1.08);
+  }
+
+  .site-nav.is-scrolled {
+    border-bottom-color: var(--color-line);
+    border-image: var(--grad-rule) 1;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-nav::before {
+      background: var(--color-paper);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .site-nav::before {
+      background: var(--color-paper);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  .nav-inner {
+    display: flex;
+    min-height: 72px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .brand {
+    display: inline-flex;
+    min-height: 44px;
+    flex: none;
+    align-items: center;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .brand span {
+    color: var(--color-copper);
+  }
+
+  .desktop-nav {
+    display: none;
+    align-items: center;
+    gap: 30px;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+
+  .nav-link {
+    position: relative;
+    padding-block: 8px;
+    color: var(--color-ink-soft);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s var(--ease-ledger);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 3px 0;
+    height: 1px;
+    background: var(--color-pine);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s var(--ease-ledger);
+  }
+
+  .nav-link:hover,
+  .nav-link[aria-current="location"] {
+    color: var(--color-pine);
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="location"]::after {
+    transform: scaleX(1);
+  }
+
+  .nav-actions {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-ink-soft);
+    transition:
+      border-color 0.2s var(--ease-ledger),
+      background-color 0.2s var(--ease-ledger),
+      color 0.2s var(--ease-ledger),
+      transform 0.12s var(--ease-ledger);
+  }
+
+  .icon-btn:active {
+    transform: translateY(1px);
+  }
+
+  .icon-btn:hover {
+    border-color: var(--color-line-strong);
+    color: var(--color-ink);
+  }
+
+  .theme-toggle {
+    border-color: var(--color-line);
+  }
+
+  .icon-moon,
+  :global([data-theme="dark"]) .icon-sun {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .icon-moon {
+    display: block;
+  }
+
+  .nav-mail {
+    display: none;
+  }
+
+  .menu-toggle {
+    border-color: var(--color-line);
+  }
+
+  .menu-icon {
+    display: flex;
+    width: 17px;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .menu-icon span {
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transform-origin: center;
+    transition: transform 0.25s var(--ease-ledger);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-icon span:first-child {
+    transform: translateY(3px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-icon span:last-child {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 72px 0 0 0;
+    z-index: 55;
+    overflow-y: auto;
+    background: var(--color-paper);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition:
+      opacity 0.3s var(--ease-ledger),
+      transform 0.3s var(--ease-ledger);
+  }
+
+  .mobile-menu[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .menu-inner {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding-block: 28px 36px;
+  }
+
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 22px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 16px;
+    border-bottom: 1px solid var(--color-line);
+    font-family: var(--font-serif);
+    font-size: clamp(2.6rem, 12vw, 3.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .menu-line {
+    width: 30px;
+    height: 1px;
+    flex: none;
+    background: var(--color-copper);
+    transform: scaleX(0.4);
+    transform-origin: right;
+    transition: transform 0.25s var(--ease-ledger);
+  }
+
+  .menu-link:hover .menu-line,
+  .menu-link:focus-visible .menu-line,
+  .menu-link[aria-current="location"] .menu-line {
+    transform: scaleX(1);
+  }
+
+  .menu-link[aria-current="location"] {
+    color: var(--color-pine);
+  }
+
+  .menu-link[aria-current="location"] .menu-line {
+    background: var(--color-pine);
+  }
+
+  .menu-foot {
+    margin-top: auto;
+    padding-top: 40px;
+  }
+
+  .menu-mail {
+    display: inline-flex;
+    max-width: 100%;
+    min-height: 44px;
+    align-items: center;
+    margin-top: 6px;
+    color: var(--color-pine);
+    overflow-wrap: anywhere;
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .menu-note {
+    max-width: 32ch;
+    margin-top: 18px;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 900px) {
+    .desktop-nav {
+      display: flex;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .nav-mail {
+      display: inline-flex;
+    }
+  }
+</style>

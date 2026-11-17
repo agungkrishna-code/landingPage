@@ -29,18 +29,19 @@ One person builds both sides of an on-chain product: the interface and the contr
 
 - Contact happens by email: `agungkrishnananda@gmail.com`. There is no form, booking flow, or account system.
 - Public presence the site links to: GitHub `github.com/agungkrishna-code`, LinkedIn `linkedin.com/in/dewa-gede-agung-krishnananda-sudewa-790433223`, Instagram `@agungkrishnananda`.
-- Deployed as a fully static site on Vercel at `https://agungkrishnananda.vercel.app`.
+- Deployed as a fully static Astro build on Vercel at `https://agungkrishnananda.vercel.app`. There is no server runtime.
 - The owner is early-career and actively looking; availability messaging ("open for freelance and collaboration") is live product copy, not decoration.
-- Site sections in use: home, about, services, work, contact band.
+- Site sections in use: home, about, services, work, contact.
 
 ## Capabilities and Constraints
 
-- Static Next.js App Router site. No database, no backend, no auth, no CMS, no UI framework, no animation library. Content is hardcoded in components.
+- Static Astro 7 site with Tailwind CSS 4. No database, backend, auth, CMS, or client-side app framework. Page copy lives in `src/data/site.ts`; layout and motion are separate.
+- GSAP 3 with ScrollTrigger drives the motion, and Lenis smooths scrolling on the same ticker. Motion includes hero word masks, scroll reveals, hairline draws, a pinned services deck and horizontal work plates at 1024px and wider, parallax, and a scroll progress bar. `prefers-reduced-motion` disables Lenis, splitting, pins, reveals, and parallax.
 - Four stated service lines: web development, smart contracts, dApp integration, API/backend.
 - Light and dark themes; first visit follows OS preference, choice persists in `localStorage` (`kr-theme`).
-- SEO surface is intentional: metadata, canonical, Open Graph, Twitter card, `Person` JSON-LD, robots, sitemap, generated OG image.
+- SEO surface is intentional: metadata, canonical, Open Graph, Twitter card, `Person` JSON-LD, robots, sitemap.
 - The CV is downloadable at `/krishna-cv.pdf` (`public/krishna-cv.pdf`), linked from the About section. Replacing that file updates the download.
-- **Hero stat figures are withdrawn.** "10+ projects", "3 EVM chains", and "100% open source" were carried over from an earlier version and could not be confirmed. The row has been removed from `Hero.jsx` and its styles from `globals.css`. Reintroducing any figure requires verified counts; replacing that row is otherwise an open decision.
+- **Hero stat figures are withdrawn.** "10+ projects", "3 EVM chains", and "100% open source" were carried over from an earlier version and could not be confirmed. The row has been removed from `Hero.astro` and its styles from `global.css`. Reintroducing any figure requires verified counts; replacing that row is otherwise an open decision.
 - Terminology the site uses about itself: "junior", "concept studies", "in progress", "open for freelance and collaboration". Claims of seniority, team size, client logos, or years of experience are not available.
 
 ## Brand Commitments
