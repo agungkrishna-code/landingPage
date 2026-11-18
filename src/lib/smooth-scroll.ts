@@ -10,11 +10,15 @@ export type SmoothScroll = {
 };
 
 /**
- * Lenis is deliberately disabled for reduced-motion users. ScrollTrigger keeps
- * working against native scrolling in that case.
+ * Lenis is deliberately skipped for reduced-motion users and for touch or
+ * coarse-pointer devices, where native momentum scrolling is already smooth.
+ * Running it there only adds a second animation loop on top of ScrollTrigger.
  */
 export function initSmoothScroll(): SmoothScroll {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const precisePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  if (reduced.matches || !precisePointer.matches) {
     return { lenis: null, destroy: () => {} };
   }
 

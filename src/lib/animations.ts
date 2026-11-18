@@ -137,8 +137,6 @@ function initHero() {
   const kicker = hero.querySelector<HTMLElement>('[data-hero-kicker]');
   const sub = hero.querySelector<HTMLElement>('[data-hero-sub]');
   const actions = hero.querySelector<HTMLElement>('[data-hero-actions]');
-  const portrait = hero.querySelector<HTMLElement>('[data-hero-portrait]');
-  const portraitImg = hero.querySelector<HTMLElement>('[data-portrait-inner] img');
   const stamp = hero.querySelector<HTMLElement>('.portrait-stamp');
   const rail = hero.querySelector<HTMLElement>('[data-hero-rail]');
   const railItems = rail ? Array.from(rail.children) : [];
@@ -183,21 +181,8 @@ function initHero() {
       );
     }
 
-    if (portrait) {
-      tl.from(
-        portrait,
-        { y: 28, opacity: 0, duration: 1.1 },
-        0.22,
-      );
-    }
-
-    if (portraitImg) {
-      tl.from(
-        portraitImg,
-        { scale: 1.08, duration: 1.2, ease: 'power3.out' },
-        0.22,
-      );
-    }
+    // The portrait plate and image animate from CSS (see Hero.astro) so the
+    // LCP element paints immediately and never waits for fonts or this module.
 
     if (stamp) {
       tl.from(
@@ -506,14 +491,26 @@ export function initAnimations() {
 
   const refresh = () => ScrollTrigger.refresh();
 
-  window.addEventListener('load', refresh, { once: true });
-  document.fonts?.ready.then(refresh).catch(() => {});
-  document.querySelectorAll('img').forEach((image) => {
-    if (!image.complete) {
-      image.addEventListener('load', refresh, { once: true });
-      image.addEventListener('error', refresh, { once: true });
-    }
-  });
+  // One measurement pass after the document is settled. Calling refresh for
+  // every image load re-measures every trigger several times during startup,
+  // which showed up as forced reflow in Lighthouse. Images below carry fixed
+  // width and height, so their arrival does not move any trigger.
+  let refreshQueued = false;
+  const scheduleRefresh = () => {
+    if (refreshQueued) return;
+    refreshQueued = true;
+    requestAnimationFrame(() => {
+      refreshQueued = false;
+      refresh();
+    });
+  };
+
+  if (document.readyState === 'complete') {
+    scheduleRefresh();
+  } else {
+    window.addEventListener('load', scheduleRefresh, { once: true });
+  }
+  document.fonts?.ready.then(scheduleRefresh).catch(() => {});
 
   window.addEventListener(
     'pagehide',

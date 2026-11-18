@@ -17,7 +17,12 @@ const email = site.email;
 
         <p class="contact-lead" lang="id" data-reveal-child>{contact.lead}</p>
 
-        <a class="contact-email" href={`mailto:${email}?subject=Hello%20Krishna`} data-reveal-child>
+        <a
+          class="contact-email"
+          href={`mailto:${email}?subject=Hello%20Krishna`}
+          data-copy-source
+          data-reveal-child
+        >
           {email}
         </a>
 

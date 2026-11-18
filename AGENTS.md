@@ -30,6 +30,7 @@ Node 22.23.4 or newer. Do not commit `dist/`, `.astro/`, or `node_modules/`.
 - Document shell, metadata, fonts, JSON-LD: `src/layouts/Base.astro`
 - Sections: `src/components/*.astro`
 - Concept sketches: `src/components/ui/`
+- Client entry point that boots UI and motion: `src/scripts/main.ts`
 - Motion constants: `src/lib/motion.ts`
 - GSAP timelines and ScrollTrigger: `src/lib/animations.ts`
 - Lenis sync: `src/lib/smooth-scroll.ts`

@@ -207,6 +207,36 @@ import { hero } from '../data/site';
     transform: rotate(-3.5deg);
   }
 
+  /* The portrait is the LCP element, so it never fades and never waits for
+     fonts or GSAP: a CSS transform entrance runs at parse time, before the
+     first paint, and the image stays painted throughout. `backwards` fill
+     applies the offset during the delay and leaves no transform behind. */
+  .portrait-plate {
+    animation: plate-rise 1.1s var(--ease-ledger) 0.22s backwards;
+  }
+
+  .portrait-img {
+    animation: plate-zoom 1.2s var(--ease-ledger) 0.22s backwards;
+  }
+
+  @keyframes plate-rise {
+    from {
+      transform: translateY(28px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes plate-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
   .portrait-plate figcaption {
     max-width: 36ch;
     margin-top: 12px;
@@ -305,6 +335,11 @@ import { hero } from '../data/site';
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .portrait-plate,
+    .portrait-img {
+      animation: none;
+    }
+
     .cue-line::after {
       animation: none;
       transform: translateX(0);

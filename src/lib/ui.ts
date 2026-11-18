@@ -223,7 +223,7 @@ export function initNav(smoothScroll: SmoothScroll) {
   window.addEventListener('resize', requestActive, { passive: true });
 }
 
-/** Clipboard action with a labelled fallback for non-secure contexts. */
+/** Clipboard action with a manual-selection fallback for non-secure contexts. */
 export function initCopyEmail() {
   const buttons = document.querySelectorAll<HTMLButtonElement>(
     '[data-copy-email]',
@@ -250,18 +250,16 @@ export function initCopyEmail() {
       }, 2400);
     };
 
-    const fallbackCopy = () => {
-      const field = document.createElement('textarea');
-      field.value = email;
-      field.setAttribute('readonly', '');
-      field.style.position = 'fixed';
-      field.style.top = '-1000px';
-      field.style.opacity = '0';
-      document.body.appendChild(field);
-      field.select();
-      const ok = document.execCommand('copy');
-      field.remove();
-      return ok;
+    const selectSource = () => {
+      const source = document.querySelector<HTMLElement>('[data-copy-source]');
+      const selection = window.getSelection();
+      if (!source || !selection) return false;
+
+      const range = document.createRange();
+      range.selectNodeContents(source);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      return true;
     };
 
     button.addEventListener('click', async () => {
@@ -269,8 +267,8 @@ export function initCopyEmail() {
         await navigator.clipboard.writeText(email);
         announce(copiedLabel, 'copied');
       } catch {
-        const copied = fallbackCopy();
-        announce(copied ? copiedLabel : errorLabel, copied ? 'copied' : 'error');
+        selectSource();
+        announce(errorLabel, 'error');
       }
     });
   });
